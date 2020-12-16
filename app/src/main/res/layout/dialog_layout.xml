@@ -25,7 +25,7 @@
             android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/arkhip_font"
             android:text="SIGN UP"
@@ -96,12 +96,36 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phone"
             app:met_floatingLabel="normal" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password">
+
+            <RadioButton
+                android:id="@+id/driver_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I am driver"
+                android:layout_marginEnd="20dp"/>
+
+            <RadioButton
+                android:id="@+id/customer_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I am customer"
+                android:checked="true"/>
+        </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

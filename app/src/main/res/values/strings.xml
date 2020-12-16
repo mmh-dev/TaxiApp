@@ -3,4 +3,5 @@
     <string name="applicationID">hfIm78eb3TwgTowccQGg9Uvm8dCy17tk4O90fspE</string>
     <string name="clientKey">bEmJgAIepvr3ROkGihAdwSGpyJO6sHV0znDmISYf</string>
     <string name="ParseAPI">https://parseapi.back4app.com/</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
