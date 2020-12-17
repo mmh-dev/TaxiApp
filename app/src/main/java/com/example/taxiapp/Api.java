@@ -19,6 +19,10 @@ public interface Api {
             @Header("X-Parse-Revocable-Session") int session,
             @Body User user);
 
+    @Headers({
+            "X-Parse-Application-Id: hfIm78eb3TwgTowccQGg9Uvm8dCy17tk4O90fspE",
+            "X-Parse-REST-API-Key: IuLiQJRoNfhO1I9mVSYq81SvMbouVc5f3D5ioKqq"
+    })
     @GET("/login")
     Call<ApiResponseUserLogin> loggingIn (
             @Header("X-Parse-Revocable-Session") int session,

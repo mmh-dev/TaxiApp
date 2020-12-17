@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
             }
 
             @Override

@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
+    android:layout_width="400dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -113,18 +113,27 @@
             app:layout_constraintTop_toBottomOf="@+id/password">
 
             <RadioButton
-                android:id="@+id/driver_btn"
+                android:id="@+id/driverX_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="I am driver"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginEnd="20dp"
+                android:text="Driver X" />
+
+            <RadioButton
+                android:id="@+id/driverVip_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:text="Driver VIP" />
 
             <RadioButton
                 android:id="@+id/customer_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="I am customer"
-                android:checked="true"/>
+                android:checked="true"
+                android:text="Customer" />
+
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

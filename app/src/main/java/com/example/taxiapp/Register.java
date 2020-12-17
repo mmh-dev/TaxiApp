@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.parse.ParseUser;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -34,7 +35,7 @@ public class Register extends AppCompatActivity {
         super.onStart();
         ParseUser user = ParseUser.getCurrentUser();
         if (user != null) {
-            startActivity(new Intent(Register.this, MainActivity.class));
+            startActivity(new Intent(Register.this, MapsActivity.class));
 
         }
     }
@@ -63,8 +64,11 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                         switch (checkedId){
-                            case R.id.driver_btn:
-                                userType = "driver";
+                            case R.id.driverX_btn:
+                                userType = "driverX";
+                                return;
+                            case R.id.driverVip_btn:
+                                userType = "driverVip";
                                 return;
                             case R.id.customer_btn:
                                 userType = "customer";
@@ -116,7 +120,7 @@ public class Register extends AppCompatActivity {
                 dialog_title = signInLayout.findViewById(R.id.dialog_title);
                 dialog_title.setText("Sign-In");
                 dialog_message = signInLayout.findViewById(R.id.dialog_message);
-                dialog_message.setText("Sign-In with username and password");
+                dialog_message.setVisibility(View.GONE);
 
                 signInDialog.setPositiveButton("Sign In", new DialogInterface.OnClickListener() {
                     @Override
@@ -155,7 +159,9 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<ApiResponseUserLogin> call, Response<ApiResponseUserLogin> response) {
                 if (response.isSuccessful()){
                     Toast.makeText(Register.this, "User is Logged in!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Register.this, MainActivity.class));
+                    Intent intent = new Intent(Register.this, MapsActivity.class);
+                    intent.putExtra("currentUser", new Gson().toJson(response.body()));
+                    startActivity(intent);
                 }
             }
             @Override
@@ -178,8 +184,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponseUserSignUp> call, Response<ApiResponseUserSignUp> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(Register.this, "User is registered!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Register.this, MainActivity.class));
+                    Toast.makeText(Register.this, "User is registered! Please, sign-In with username and password", Toast.LENGTH_SHORT).show();
                 }
             }
 
