@@ -149,17 +149,17 @@ public class Register extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api api = retrofit.create(Api.class);
-        Call<User> call = api.loggingIn(1, txt_username, txt_password);
-        call.enqueue(new Callback<User>() {
+        Call<ApiResponseUserLogin> call = api.loggingIn(1, txt_username, txt_password);
+        call.enqueue(new Callback<ApiResponseUserLogin>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<ApiResponseUserLogin> call, Response<ApiResponseUserLogin> response) {
                 if (response.isSuccessful()){
                     Toast.makeText(Register.this, "User is Logged in!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Register.this, MainActivity.class));
                 }
             }
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<ApiResponseUserLogin> call, Throwable t) {
                 Log.i("error", t.getMessage());
             }
         });
@@ -172,11 +172,11 @@ public class Register extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api api = retrofit.create(Api.class);
-        Call<User> call = api.createUser(1, user);
-        call.enqueue(new Callback<User>() {
+        Call<ApiResponseUserSignUp> call = api.createUser(1, user);
+        call.enqueue(new Callback<ApiResponseUserSignUp>() {
 
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<ApiResponseUserSignUp> call, Response<ApiResponseUserSignUp> response) {
                 if (response.isSuccessful()){
                     Toast.makeText(Register.this, "User is registered!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Register.this, MainActivity.class));
@@ -184,7 +184,7 @@ public class Register extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<ApiResponseUserSignUp> call, Throwable t) {
                 Log.i("error", t.getMessage());
             }
         });

@@ -15,12 +15,12 @@ public interface Api {
     })
 
     @POST("/users")
-    Call<User> createUser (
+    Call<ApiResponseUserSignUp> createUser (
             @Header("X-Parse-Revocable-Session") int session,
             @Body User user);
 
     @GET("/login")
-    Call<User> loggingIn (
+    Call<ApiResponseUserLogin> loggingIn (
             @Header("X-Parse-Revocable-Session") int session,
             @Query("username") String username,
             @Query("password") String password);
