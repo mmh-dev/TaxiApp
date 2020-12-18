@@ -14,6 +14,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,10 +31,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     LocationManager locationManager;
+    Button getTaxi;
+    TextView UserAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getTaxi = findViewById(R.id.getTaxi);
+        UserAddress = findViewById(R.id.address);
 
     }
 
@@ -71,9 +86,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(@NonNull Location location) {
                 mMap.clear();
                 LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney")
+                mMap.addMarker(new MarkerOptions().position(position).title("Your position")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 13));
+
+                Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    String address = addressList.get(0).getAddressLine(0);
+                    UserAddress.setText(address);
+                    getTaxi.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Order order = new Order(new GeoPoint("GeoPoint", location.getLatitude(), location.getLongitude()), getIntent().getStringExtra("username"), address, getIntent().getStringExtra("phone"));
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl("https://parseapi.back4app.com")
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+                            Api api = retrofit.create(Api.class);
+                            Call<ApiResponseUserSignUp> call = api.createOrder(order);
+                            call.enqueue(new Callback<ApiResponseUserSignUp>() {
+
+                                @Override
+                                public void onResponse(Call<ApiResponseUserSignUp> call, Response<ApiResponseUserSignUp> response) {
+                                    if (response.isSuccessful()){
+                                        Toast.makeText(MapsActivity.this, "Order is registered!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ApiResponseUserSignUp> call, Throwable t) {
+                                    Log.i("error", t.getMessage());
+                                }
+                            });
+                        }
+                    });
+                } catch (IOException e) {
+                    e.getMessage();
+                }
             }
 
             @Override
