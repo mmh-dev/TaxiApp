@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,11 +36,15 @@ public class Register extends AppCompatActivity {
     String userType;
     TextView dialog_title, dialog_message;
     CoordinatorLayout parent;
+    SharedPreferences preferences;
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        ParseUser user = ParseUser.getCurrentUser();
-        if (user != null) {
+        preferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        Token.token = preferences.getString("token", "");
+        if (Token.token != null && !Token.token.equals("")) {
             startActivity(new Intent(Register.this, MapsActivity.class));
 
         }
@@ -164,10 +170,21 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<ApiResponseUserLogin> call, Response<ApiResponseUserLogin> response) {
                 if (response.isSuccessful()){
                     Snackbar.make(parent, "User is Logged in!", Snackbar.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Register.this, MapsActivity.class);
-                    intent.putExtra("username", response.body().getUsername());
-                    intent.putExtra("phone", response.body().getPhone());
-                    startActivity(intent);
+                    Token.token = response.body().getSessionToken();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("token", Token.token);
+                    editor.apply();
+                    if (response.body().getUserType().equals("customer")){
+                        Intent intent = new Intent(Register.this, MapsActivity.class);
+                        intent.putExtra("username", response.body().getUsername());
+                        intent.putExtra("phone", response.body().getPhone());
+                        startActivity(intent);
+                    }
+                    else if (response.body().getUserType().equals("driverX") || response.body().getUserType().equals("driverVip")){
+                        Intent intent = new Intent(Register.this, OrderList.class);
+                        startActivity(intent);
+                    }
+
                 }
             }
             @Override
@@ -191,6 +208,10 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<ApiResponseUserSignUp> call, Response<ApiResponseUserSignUp> response) {
                 if (response.isSuccessful()){
                     Snackbar.make(parent, "User is registered! Please, sign-In with username and password", Snackbar.LENGTH_SHORT).show();
+                    Token.token = response.body().getSessionToken();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("token", Token.token);
+                    editor.apply();
                 }
             }
 
