@@ -180,7 +180,7 @@ public class Register extends AppCompatActivity {
                         intent.putExtra("phone", response.body().getPhone());
                         startActivity(intent);
                     }
-                    else if (response.body().getUserType().equals("driverX") || response.body().getUserType().equals("driverVip")){
+                    if (response.body().getUserType().equals("driverX") || response.body().getUserType().equals("driverVip")){
                         Intent intent = new Intent(Register.this, OrderList.class);
                         startActivity(intent);
                     }

@@ -38,4 +38,12 @@ public interface Api {
     Call<ApiResponseUserSignUp> createOrder (
             @Body Order order);
 
+
+    @Headers({
+            "X-Parse-Application-Id: hfIm78eb3TwgTowccQGg9Uvm8dCy17tk4O90fspE",
+            "X-Parse-REST-API-Key: IuLiQJRoNfhO1I9mVSYq81SvMbouVc5f3D5ioKqq"
+    })
+    @GET("/classes/Order")
+    Call<ApiResponseOrder> getOrder ();
+
 }

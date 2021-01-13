@@ -5,12 +5,15 @@ public class Order {
     private String username;
     private String address;
     private String phone;
+    private Boolean isTaken;
+    private String driver;
 
-    public Order(GeoPoint location, String username, String address, String phone) {
+    public Order(GeoPoint location, String username, String address, String phone, Boolean isTaken) {
         this.location = location;
         this.username = username;
         this.address = address;
         this.phone = phone;
+        this.isTaken = isTaken;
     }
 
     public GeoPoint getLocation() {
@@ -43,5 +46,21 @@ public class Order {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Boolean getTaken() {
+        return isTaken;
+    }
+
+    public void setTaken(Boolean taken) {
+        isTaken = taken;
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
 }

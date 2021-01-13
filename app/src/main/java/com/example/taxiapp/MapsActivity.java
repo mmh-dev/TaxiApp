@@ -87,15 +87,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -122,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     getTaxi.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Order order = new Order(new GeoPoint("GeoPoint", location.getLatitude(), location.getLongitude()), getIntent().getStringExtra("username"), address, getIntent().getStringExtra("phone"));
+                            Order order = new Order(new GeoPoint("GeoPoint", location.getLatitude(), location.getLongitude()), getIntent().getStringExtra("username"), address, getIntent().getStringExtra("phone"), false);
                             Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl("https://parseapi.back4app.com")
                                     .addConverterFactory(GsonConverterFactory.create())
