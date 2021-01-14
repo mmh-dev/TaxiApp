@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -126,6 +127,10 @@ public class OrderList extends AppCompatActivity {
                 Intent intent = new Intent(OrderList.this, DriverMapsActivity.class);
                 intent.putExtra("driverLocation", driverLocation);
                 intent.putExtra("userLocation", customerLocation);
+                intent.putExtra("selectedOrder", new Gson().toJson(orderList.get(position)));
+                intent.putExtra("driverUsername", getIntent().getStringExtra("driverUsername"));
+                intent.putExtra("driverPhone", getIntent().getStringExtra("driverPhone"));
+
                 startActivity(intent);
             }
         });

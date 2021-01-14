@@ -44,9 +44,15 @@ public class Register extends AppCompatActivity {
         super.onStart();
         preferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Token.token = preferences.getString("token", "");
-        if (Token.token != null && !Token.token.equals("")) {
+        Token.userType = preferences.getString("userType", "");
+        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("customer")) {
             startActivity(new Intent(Register.this, MapsActivity.class));
-
+        }
+        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("driverX")) {
+            startActivity(new Intent(Register.this, OrderList.class));
+        }
+        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("driverVip")) {
+            startActivity(new Intent(Register.this, OrderList.class));
         }
     }
 
@@ -171,8 +177,10 @@ public class Register extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Snackbar.make(parent, "User is Logged in!", Snackbar.LENGTH_SHORT).show();
                     Token.token = response.body().getSessionToken();
+                    Token.userType = userType;
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("token", Token.token);
+                    editor.putString("userType", Token.userType);
                     editor.apply();
                     if (response.body().getUserType().equals("customer")){
                         Intent intent = new Intent(Register.this, MapsActivity.class);
@@ -182,6 +190,8 @@ public class Register extends AppCompatActivity {
                     }
                     if (response.body().getUserType().equals("driverX") || response.body().getUserType().equals("driverVip")){
                         Intent intent = new Intent(Register.this, OrderList.class);
+                        intent.putExtra("driverUsername", response.body().getUsername());
+                        intent.putExtra("driverPhone", response.body().getPhone());
                         startActivity(intent);
                     }
 
@@ -209,8 +219,10 @@ public class Register extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Snackbar.make(parent, "User is registered! Please, sign-In with username and password", Snackbar.LENGTH_SHORT).show();
                     Token.token = response.body().getSessionToken();
+                    Token.userType = userType;
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("token", Token.token);
+                    editor.putString("userType", Token.userType);
                     editor.apply();
                 }
             }

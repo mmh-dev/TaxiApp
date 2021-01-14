@@ -7,6 +7,7 @@ public class Order {
     private String phone;
     private Boolean isTaken;
     private String driver;
+    private String objectId;
 
     public Order(GeoPoint location, String username, String address, String phone, Boolean isTaken) {
         this.location = location;
@@ -62,5 +63,13 @@ public class Order {
 
     public void setDriver(String driver) {
         this.driver = driver;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }
