@@ -45,14 +45,14 @@ public class Register extends AppCompatActivity {
         preferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         Token.token = preferences.getString("token", "");
         Token.userType = preferences.getString("userType", "");
-        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("customer")) {
-            startActivity(new Intent(Register.this, MapsActivity.class));
-        }
-        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("driverX")) {
-            startActivity(new Intent(Register.this, OrderList.class));
-        }
-        if (Token.token != null && !Token.token.equals("") && Token.userType.equals("driverVip")) {
-            startActivity(new Intent(Register.this, OrderList.class));
+
+        if (Token.token != null || !Token.token.equals("")) {
+            if (Token.userType.equals("customer")){
+                startActivity(new Intent(Register.this, MapsActivity.class));
+            }
+            else if (Token.userType.equals("driverX") || Token.userType.equals("driverVip")){
+                startActivity(new Intent(Register.this, OrderList.class));
+            }
         }
     }
 
@@ -218,12 +218,6 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<ApiResponseUserSignUp> call, Response<ApiResponseUserSignUp> response) {
                 if (response.isSuccessful()){
                     Snackbar.make(parent, "User is registered! Please, sign-In with username and password", Snackbar.LENGTH_SHORT).show();
-                    Token.token = response.body().getSessionToken();
-                    Token.userType = userType;
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("token", Token.token);
-                    editor.putString("userType", Token.userType);
-                    editor.apply();
                 }
             }
 
